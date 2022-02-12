@@ -11,7 +11,7 @@
         //falta la relacion con la tabla auxiliar
         //propiedades de navegacion
         //una serie o pelicula tiene varios personajes
-        public ICollection<CharactersMS> Characters { get; set; } = new List<CharactersMS>();
+        public List<CharactersMS> Characters_MovieSeries { get; set; }
         //una serei o pelicula tiene un genero
         public Genres Genres { get; set; }
     }

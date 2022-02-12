@@ -16,7 +16,7 @@
 
         //propiedades de navegacion
         // un personaje aparece en varias series o peliculas
-        public ICollection<CharactersMS> movies_series { get; set; }
+        public List<CharactersMS> Characters_MovieSeries { get; set; }
 
     }
 }

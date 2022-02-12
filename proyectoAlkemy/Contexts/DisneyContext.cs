@@ -11,6 +11,16 @@ namespace proyectoAlkemy.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasDefaultSchema(Schema);
+            modelBuilder.Entity<CharactersMS>()
+                .HasOne(c => c.character)
+                .WithMany(ms => ms.Characters_MovieSeries)
+                .HasForeignKey(ci => ci.charactersID);
+
+            modelBuilder.Entity<CharactersMS>()
+                .HasOne(c => c.movieSerie)
+                .WithMany(ms => ms.Characters_MovieSeries)
+                .HasForeignKey(ci => ci.movie_serieID);
+
         }
 
         public DbSet<Characters> Characters { get; set; } = null!;

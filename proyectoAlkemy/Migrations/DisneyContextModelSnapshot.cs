@@ -23,36 +23,6 @@ namespace proyectoAlkemy.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("CharactersCharactersMS", b =>
-                {
-                    b.Property<int>("Charactersid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("movies_seriesid")
-                        .HasColumnType("int");
-
-                    b.HasKey("Charactersid", "movies_seriesid");
-
-                    b.HasIndex("movies_seriesid");
-
-                    b.ToTable("CharactersCharactersMS", "disney");
-                });
-
-            modelBuilder.Entity("CharactersMSMovieSerie", b =>
-                {
-                    b.Property<int>("Charactersid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("movies_serieId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Charactersid", "movies_serieId");
-
-                    b.HasIndex("movies_serieId");
-
-                    b.ToTable("CharactersMSMovieSerie", "disney");
-                });
-
             modelBuilder.Entity("proyectoAlkemy.Models.Characters", b =>
                 {
                     b.Property<int>("id")
@@ -92,13 +62,17 @@ namespace proyectoAlkemy.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
-                    b.Property<int>("characters_ms")
+                    b.Property<int>("charactersID")
                         .HasColumnType("int");
 
-                    b.Property<int>("movie_serie")
+                    b.Property<int>("movie_serieID")
                         .HasColumnType("int");
 
                     b.HasKey("id");
+
+                    b.HasIndex("charactersID");
+
+                    b.HasIndex("movie_serieID");
 
                     b.ToTable("CharactersMs", "disney");
                 });
@@ -160,34 +134,23 @@ namespace proyectoAlkemy.Migrations
                     b.ToTable("MovieSeries", "disney");
                 });
 
-            modelBuilder.Entity("CharactersCharactersMS", b =>
+            modelBuilder.Entity("proyectoAlkemy.Models.CharactersMS", b =>
                 {
-                    b.HasOne("proyectoAlkemy.Models.Characters", null)
-                        .WithMany()
-                        .HasForeignKey("Charactersid")
+                    b.HasOne("proyectoAlkemy.Models.Characters", "character")
+                        .WithMany("Characters_MovieSeries")
+                        .HasForeignKey("charactersID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("proyectoAlkemy.Models.CharactersMS", null)
-                        .WithMany()
-                        .HasForeignKey("movies_seriesid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CharactersMSMovieSerie", b =>
-                {
-                    b.HasOne("proyectoAlkemy.Models.CharactersMS", null)
-                        .WithMany()
-                        .HasForeignKey("Charactersid")
+                    b.HasOne("proyectoAlkemy.Models.MovieSerie", "movieSerie")
+                        .WithMany("Characters_MovieSeries")
+                        .HasForeignKey("movie_serieID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("proyectoAlkemy.Models.MovieSerie", null)
-                        .WithMany()
-                        .HasForeignKey("movies_serieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("character");
+
+                    b.Navigation("movieSerie");
                 });
 
             modelBuilder.Entity("proyectoAlkemy.Models.MovieSerie", b =>
@@ -201,9 +164,19 @@ namespace proyectoAlkemy.Migrations
                     b.Navigation("Genres");
                 });
 
+            modelBuilder.Entity("proyectoAlkemy.Models.Characters", b =>
+                {
+                    b.Navigation("Characters_MovieSeries");
+                });
+
             modelBuilder.Entity("proyectoAlkemy.Models.Genres", b =>
                 {
                     b.Navigation("movies");
+                });
+
+            modelBuilder.Entity("proyectoAlkemy.Models.MovieSerie", b =>
+                {
+                    b.Navigation("Characters_MovieSeries");
                 });
 #pragma warning restore 612, 618
         }

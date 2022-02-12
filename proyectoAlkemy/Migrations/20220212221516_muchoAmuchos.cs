@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace proyectoAlkemy.Migrations
 {
-    public partial class Primera : Migration
+    public partial class muchoAmuchos : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,21 +31,6 @@ namespace proyectoAlkemy.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CharactersMs",
-                schema: "disney",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    characters_ms = table.Column<int>(type: "int", nullable: false),
-                    movie_serie = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CharactersMs", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Genres",
                 schema: "disney",
                 columns: table => new
@@ -59,33 +44,6 @@ namespace proyectoAlkemy.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Genres", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CharactersCharactersMS",
-                schema: "disney",
-                columns: table => new
-                {
-                    Charactersid = table.Column<int>(type: "int", nullable: false),
-                    movies_seriesid = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CharactersCharactersMS", x => new { x.Charactersid, x.movies_seriesid });
-                    table.ForeignKey(
-                        name: "FK_CharactersCharactersMS_Characters_Charactersid",
-                        column: x => x.Charactersid,
-                        principalSchema: "disney",
-                        principalTable: "Characters",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CharactersCharactersMS_CharactersMs_movies_seriesid",
-                        column: x => x.movies_seriesid,
-                        principalSchema: "disney",
-                        principalTable: "CharactersMs",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -114,26 +72,28 @@ namespace proyectoAlkemy.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CharactersMSMovieSerie",
+                name: "CharactersMs",
                 schema: "disney",
                 columns: table => new
                 {
-                    Charactersid = table.Column<int>(type: "int", nullable: false),
-                    movies_serieId = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    charactersID = table.Column<int>(type: "int", nullable: false),
+                    movie_serieID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CharactersMSMovieSerie", x => new { x.Charactersid, x.movies_serieId });
+                    table.PrimaryKey("PK_CharactersMs", x => x.id);
                     table.ForeignKey(
-                        name: "FK_CharactersMSMovieSerie_CharactersMs_Charactersid",
-                        column: x => x.Charactersid,
+                        name: "FK_CharactersMs_Characters_charactersID",
+                        column: x => x.charactersID,
                         principalSchema: "disney",
-                        principalTable: "CharactersMs",
+                        principalTable: "Characters",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CharactersMSMovieSerie_MovieSeries_movies_serieId",
-                        column: x => x.movies_serieId,
+                        name: "FK_CharactersMs_MovieSeries_movie_serieID",
+                        column: x => x.movie_serieID,
                         principalSchema: "disney",
                         principalTable: "MovieSeries",
                         principalColumn: "Id",
@@ -141,16 +101,16 @@ namespace proyectoAlkemy.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CharactersCharactersMS_movies_seriesid",
+                name: "IX_CharactersMs_charactersID",
                 schema: "disney",
-                table: "CharactersCharactersMS",
-                column: "movies_seriesid");
+                table: "CharactersMs",
+                column: "charactersID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CharactersMSMovieSerie_movies_serieId",
+                name: "IX_CharactersMs_movie_serieID",
                 schema: "disney",
-                table: "CharactersMSMovieSerie",
-                column: "movies_serieId");
+                table: "CharactersMs",
+                column: "movie_serieID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MovieSeries_Genresid",
@@ -162,19 +122,11 @@ namespace proyectoAlkemy.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CharactersCharactersMS",
-                schema: "disney");
-
-            migrationBuilder.DropTable(
-                name: "CharactersMSMovieSerie",
+                name: "CharactersMs",
                 schema: "disney");
 
             migrationBuilder.DropTable(
                 name: "Characters",
-                schema: "disney");
-
-            migrationBuilder.DropTable(
-                name: "CharactersMs",
                 schema: "disney");
 
             migrationBuilder.DropTable(
