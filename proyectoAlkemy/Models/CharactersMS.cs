@@ -2,6 +2,7 @@
 {
     public class CharactersMS
     {
+        public int id { get; set; }
         public int characters_ms{ get; set; }
         public int movie_serie { get; set; }
 
