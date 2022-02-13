@@ -8,18 +8,20 @@ namespace proyectoAlkemy.Contexts
         public DisneyContext(DbContextOptions<DisneyContext> options) : base(options) { 
             
         }
+
+        // uso de fluent API para definir la relaciones mucho a muchos
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasDefaultSchema(Schema);
             modelBuilder.Entity<CharactersMS>()
-                .HasOne(c => c.character)
+                .HasOne(c => c.Character)
                 .WithMany(ms => ms.Characters_MovieSeries)
-                .HasForeignKey(ci => ci.charactersID);
+                .HasForeignKey(ci => ci.CharactersID);
 
             modelBuilder.Entity<CharactersMS>()
-                .HasOne(c => c.movieSerie)
+                .HasOne(c => c.MovieSerie)
                 .WithMany(ms => ms.Characters_MovieSeries)
-                .HasForeignKey(ci => ci.movie_serieID);
+                .HasForeignKey(ci => ci.Movie_SerieID);
 
         }
 

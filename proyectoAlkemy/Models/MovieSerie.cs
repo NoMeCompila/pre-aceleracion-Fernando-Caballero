@@ -1,18 +1,28 @@
-﻿namespace proyectoAlkemy.Models
+﻿using System.ComponentModel.DataAnnotations;
+namespace proyectoAlkemy.Models
 {
     public class MovieSerie
     {
         //propiedades primitivas
-        public int Id { get; set; }
-        public string image { get; set; }
-        public string title { get; set; } 
-        public DateTime release_year { get; set; }
-        public int ranking { get; set; }
-        //falta la relacion con la tabla auxiliar
+        public int ID { get; set; }
+        [Display(Name = "Imagen")]
+        public string Image { get; set; }
+        [Required]
+        [Display(Name = "Título")]
+        [MaxLength(50)]
+        public string Title { get; set; }
+        [Required]
+        [Display(Name = "Año de lanzamiento")]
+        [DataType(DataType.Date)]
+        public DateTime Release_Year { get; set; }
+        [Display(Name = "Valoración")]
+        public int Ranking { get; set; }
+        
         //propiedades de navegacion
         //una serie o pelicula tiene varios personajes
         public List<CharactersMS> Characters_MovieSeries { get; set; }
-        //una serei o pelicula tiene un genero
+        
+        //una serie o pelicula tiene un genero
         public Genres Genres { get; set; }
     }
 }

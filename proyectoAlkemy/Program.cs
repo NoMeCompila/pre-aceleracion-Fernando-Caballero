@@ -10,11 +10,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //inyeccion de dependencias
-builder.Services.AddEntityFrameworkSqlServer();
+builder.Services.AddEntityFrameworkSqlServer(); // se indica que se trabajara con EF
 builder.Services.AddDbContext<DisneyContext>((services, options) =>
 {
     options.UseApplicationServiceProvider(services);
-    options.UseSqlServer("Data Source=DESKTOP-C7M4JOU;DataBase=DysneyDb;Integrated Security = True;");
+    //para que no esté hardocodeado se le pasa como parametro una variable que contiene el string de conexion
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DisneyConnectionString"));
 });
 //DESKTOP-C7M4JOU
 var app = builder.Build();

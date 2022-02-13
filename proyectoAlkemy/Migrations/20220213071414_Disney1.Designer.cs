@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using proyectoAlkemy.Contexts;
 
@@ -11,9 +12,10 @@ using proyectoAlkemy.Contexts;
 namespace proyectoAlkemy.Migrations
 {
     [DbContext(typeof(DisneyContext))]
-    partial class DisneyContextModelSnapshot : ModelSnapshot
+    [Migration("20220213071414_Disney1")]
+    partial class Disney1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,8 +46,7 @@ namespace proyectoAlkemy.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(35)
-                        .HasColumnType("nvarchar(35)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Weight")
                         .HasColumnType("real");
@@ -96,8 +97,7 @@ namespace proyectoAlkemy.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(35)
-                        .HasColumnType("nvarchar(35)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
@@ -127,8 +127,7 @@ namespace proyectoAlkemy.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
