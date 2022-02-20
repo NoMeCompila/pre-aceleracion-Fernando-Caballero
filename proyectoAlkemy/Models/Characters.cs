@@ -27,6 +27,8 @@ namespace proyectoAlkemy.Models
         [DataType(DataType.MultilineText)]
         public string Lore { get; set; }
 
+
+
         //propiedades de navegacion
         // un personaje aparece en varias series o peliculas
         public List<CharactersMS> Characters_MovieSeries { get; set; }
