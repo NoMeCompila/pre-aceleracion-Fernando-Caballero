@@ -17,12 +17,12 @@ namespace proyectoAlkemy.Models
         public DateTime Release_Year { get; set; }
         [Display(Name = "Valoración")]
         public int Ranking { get; set; }
-        
+      
         //propiedades de navegacion
         //una serie o pelicula tiene varios personajes
-        public List<CharactersMS> Characters_MovieSeries { get; set; }
+        public List<Characters>? Characters { get; set; }
         
         //una serie o pelicula tiene un genero
-        public Genres Genres { get; set; }
+        public Genres? Genres { get; set; }
     }
 }

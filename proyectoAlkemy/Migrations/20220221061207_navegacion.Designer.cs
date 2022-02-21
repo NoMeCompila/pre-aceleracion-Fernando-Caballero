@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using proyectoAlkemy.Contexts;
 
@@ -11,9 +12,10 @@ using proyectoAlkemy.Contexts;
 namespace proyectoAlkemy.Migrations
 {
     [DbContext(typeof(DisneyContext))]
-    partial class DisneyContextModelSnapshot : ModelSnapshot
+    [Migration("20220221061207_navegacion")]
+    partial class navegacion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,7 +105,7 @@ namespace proyectoAlkemy.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<int?>("GenresID")
+                    b.Property<int>("GenresID")
                         .HasColumnType("int");
 
                     b.Property<string>("Image")
@@ -147,7 +149,9 @@ namespace proyectoAlkemy.Migrations
                 {
                     b.HasOne("proyectoAlkemy.Models.Genres", "Genres")
                         .WithMany("Movies")
-                        .HasForeignKey("GenresID");
+                        .HasForeignKey("GenresID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Genres");
                 });

@@ -9,6 +9,7 @@ namespace proyectoAlkemy.Contexts
             
         }
 
+        /*
         // uso de fluent API para definir la relaciones mucho a muchos
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
@@ -23,11 +24,11 @@ namespace proyectoAlkemy.Contexts
                 .WithMany(ms => ms.Characters_MovieSeries)
                 .HasForeignKey(ci => ci.Movie_SerieID);
 
-        }
+        }*/
 
         public DbSet<Characters> Characters { get; set; } = null!;
         public DbSet<MovieSerie> MovieSeries{ get; set; } = null!;
         public DbSet<Genres> Genres { get; set; } = null!;
-        public DbSet<CharactersMS> CharactersMs { get; set; } = null!;
+        //public DbSet<CharactersMS> CharactersMs { get; set; } = null!;
     }
 }

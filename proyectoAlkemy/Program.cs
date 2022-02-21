@@ -25,7 +25,7 @@ builder.Services.AddDbContext<DisneyContext>((services, options) =>
 builder.Services.AddScoped<IGenresRepository, GenresRepository>();
 builder.Services.AddScoped<ICharactersRepository, CharactersRepository>();
 builder.Services.AddScoped<IMovieSeriesRepository, MovieSeriesRepository>();
-builder.Services.AddScoped<ICharacterMsRepository, CharacterMsRepository>();
+//builder.Services.AddScoped<ICharacterMsRepository, CharacterMsRepository>();
 
 
 //3 maneras de inyectar dependencias

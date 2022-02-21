@@ -1,4 +1,5 @@
 ﻿//librerias importadas
+using Microsoft.EntityFrameworkCore;
 using proyectoAlkemy.Models;
 using proyectoAlkemy.Contexts;
 using proyectoAlkemy.Interfaces;
@@ -13,7 +14,8 @@ namespace proyectoAlkemy.Repositories
         {
 
         }
-        
+
         //funcionalidades adicionales opcionales
+
     }
 }
