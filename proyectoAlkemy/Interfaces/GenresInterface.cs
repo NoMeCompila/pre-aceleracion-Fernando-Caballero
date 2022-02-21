@@ -1,6 +1,7 @@
 ﻿//interfaz para desacoplar clases
-//se debe inyectar como servicio en Program.cs
+//importar los modelos de entidades
 using proyectoAlkemy.Models;
+
 namespace proyectoAlkemy.Interfaces
 {
     public interface IGenresRepository

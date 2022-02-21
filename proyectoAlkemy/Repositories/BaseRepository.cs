@@ -4,8 +4,8 @@ namespace proyectoAlkemy.Repositories
     //contiene toda la funcionalidad generica
     //que queremos que tenga el resto de la aplicacion
     //OPERACIONES CRUD
-    public abstract class BaseRepository<TEntity, TContext>//indicar entidad y contexto
-        where TEntity : class
+    public abstract class BaseRepository<TEntity, TContext>//indicar entidad y contexto que sopn parametros genericos
+        where TEntity : class 
         where TContext : DbContext
     {
         private readonly TContext _context; 

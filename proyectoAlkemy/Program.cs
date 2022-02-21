@@ -20,8 +20,13 @@ builder.Services.AddDbContext<DisneyContext>((services, options) =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DisneyConnectionString"));
 });
 
+//----------------------------------------INYECCIONES----------------------------------------
+//-------------------------------------------------------------------------------------------
 builder.Services.AddScoped<IGenresRepository, GenresRepository>();
-//DESKTOP-C7M4JOU
+builder.Services.AddScoped<ICharactersRepository, CharactersRepository>();
+builder.Services.AddScoped<IMovieSeriesRepository, MovieSeriesRepository>();
+builder.Services.AddScoped<ICharacterMsRepository, CharacterMsRepository>();
+
 
 //3 maneras de inyectar dependencias
 //builder.Services.AddTransient();
