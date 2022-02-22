@@ -15,6 +15,5 @@ namespace proyectoAlkemy.Repositories
 
         }
 
-
     }
 }

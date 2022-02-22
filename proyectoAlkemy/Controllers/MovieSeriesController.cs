@@ -5,6 +5,7 @@ using proyectoAlkemy.Interfaces;
 using proyectoAlkemy.Contexts;
 using proyectoAlkemy.ViewModels.MovieSeries;
 
+
 namespace proyectoAlkemy.Controllers
 {
     //decoradores para índicar que es una api y ruta y especificar las rutas 
@@ -24,6 +25,60 @@ namespace proyectoAlkemy.Controllers
             _movieSeriesRepository = movieSeriesRepository;
             _context = context;
         }
+
+        
+        [HttpGet]
+        [Route("getMovieSeriesDetail")]
+
+        public async Task<IActionResult> GetMVS([FromQuery] MoviesGetResponseViewModel model)
+        {
+
+            var movies = _movieSeriesRepository.GetAllEntities();
+
+            if (!string.IsNullOrEmpty(model.Title))
+            {
+                movies = movies.Where(x => x.Title == model.Title).ToList();
+            }
+
+
+            if (!movies.Any()) return NoContent();
+
+            var responseViewModel = new List<MoviesGetResponseViewModel>();
+
+            foreach (var movie in movies)
+            {
+                responseViewModel.Add(new MoviesGetResponseViewModel()
+                {
+                    Image = movie.Image,
+                    Title = movie.Title,
+                    Release_Year = movie.Release_Year,
+                    Ranking = movie.Ranking,
+                });
+
+            }
+            return Ok(responseViewModel);
+
+        }
+        /*
+        [HttpGet]
+        [Route("probando")]
+        public IActionResult getMoviesPrueba()
+        {
+            List<MovieSerieDetailViewmodel> msg = new List<MovieSerieDetailViewmodel>();
+
+            var movies = _context.MovieSeries.ToList();
+
+            foreach(MovieSerie movie in movies)
+            {
+                foreach(Genres genre in movie.Genres)
+                {
+
+                }
+            }
+        }
+        */
+
+
 
         [HttpGet]
         [Route("movies")]

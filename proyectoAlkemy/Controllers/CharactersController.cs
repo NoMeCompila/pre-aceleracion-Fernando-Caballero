@@ -23,10 +23,66 @@ namespace proyectoAlkemy.Controllers
             _context = context1;
         }
 
+        [HttpGet]
+        [Route("getDetailCharacters")]
+
+        public async Task<IActionResult> GetDetailCharacters([FromQuery] CharacterGetDetailViewModel model) { 
+            
+            var characters = _context.Characters.ToList();
+
+            if (!string.IsNullOrEmpty(model.Name)){
+                characters = characters.Where(x=>x.Name == model.Name).ToList();
+            }
+            
+            if (!string.IsNullOrEmpty(model.Age.ToString())){
+                characters = characters.Where(x => x.Age == model.Age).ToList();
+            }
+            
+            if (!string.IsNullOrEmpty(model.Weight.ToString()))
+            {
+                characters = characters.Where(x => x.Weight == model.Weight).ToList();
+            }
+            
+            /*
+            if (!string.IsNullOrEmpty(model.MovieSeries.ToString()))
+            {
+                List<int> aux = new List<int>();
+                
+                foreach(var charact in characters)
+                {
+
+                }
+                
+                //characters = ;
+            }*/
+
+
+            if (!characters.Any()) return NoContent();
+
+            var responseViewModel = new List<CharacterGetDetailViewModel>();
+
+            foreach (var character in characters) {
+                responseViewModel.Add(new CharacterGetDetailViewModel()
+                {
+                    Image = character.Image,
+                    Name = character.Name,
+                    Age = character.Age,
+                    Weight = character.Weight,
+                    Lore = character.Lore//,
+                    //MovieSeriesID = character.ID
+                });
+            
+            }
+            return Ok(responseViewModel);
+
+        }
+
+
+
 
         [HttpGet]
         [Route("charactes")]
-        public IActionResult GetDetailCharacters() {
+        public IActionResult DetallesPersonajes() {
             var characters = _context.Characters.ToList();
             if (!characters.Any()) return NoContent();
             var responseViewModel = new List<CharactersGetResponseViewModel>();

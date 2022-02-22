@@ -2,6 +2,7 @@
 using proyectoAlkemy.Models;
 using proyectoAlkemy.Contexts;
 using proyectoAlkemy.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace proyectoAlkemy.Repositories
 {
@@ -14,7 +15,11 @@ namespace proyectoAlkemy.Repositories
         {
 
         }
+        /*
+        public MovieSerie? GetMovieByID(int id) 
+        {
+            return DbSet.Include(x => x.Genres).FirstOrDefault(x => x.ID == id);    
+        }*/
 
-        
     }
 }
