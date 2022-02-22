@@ -23,28 +23,31 @@ namespace proyectoAlkemy.Controllers
             _context = context1;
         }
 
-        
+
         [HttpGet]
-        [Route("characters")]
+        [Route("charactes")]
+        public IActionResult GetDetailCharacters() {
+            var characters = _context.Characters.ToList();
+            if (!characters.Any()) return NoContent();
+            var responseViewModel = new List<CharactersGetResponseViewModel>();
+            foreach (var character in characters) {
+                responseViewModel.Add( new CharactersGetResponseViewModel()
+                {
+                    Image = character.Image,
+                    Name = character.Name
+                });
+            }
+            return Ok(responseViewModel);
+        }
+
+
+
+        [HttpGet]
+        [Route("AllCharacters")]
         public IActionResult GetAllCharacters()
         {
             return Ok(_context.Characters.ToList());
         }
-        /*
-        public async Task<IActionResult> GetAllCharacters(CharactersGetResponseViewModel model) {
-            var characters = _charactersRepository.GetAllEntities();
-
-            var responseViewModel = new List<CharactersGetResponseViewModel>();
-            foreach (var character in characters) {
-                responseViewModel.Add(
-                    new CharactersGetResponseViewModel
-                    {
-                        Image = character.Image,
-                        Name = character.Name
-                    });
-            } 
-            return Ok(responseViewModel);
-        }*/
 
         [HttpPost]
         [Route("newCharcater")]

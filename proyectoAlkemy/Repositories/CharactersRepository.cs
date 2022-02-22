@@ -15,7 +15,6 @@ namespace proyectoAlkemy.Repositories
 
         }
 
-        //funcionalidades adicionales opcionales
 
     }
 }

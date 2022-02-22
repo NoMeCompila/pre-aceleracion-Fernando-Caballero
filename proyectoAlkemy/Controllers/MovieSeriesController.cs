@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using proyectoAlkemy.Models;
 using proyectoAlkemy.Interfaces;
 using proyectoAlkemy.Contexts;
+using proyectoAlkemy.ViewModels.MovieSeries;
 
 namespace proyectoAlkemy.Controllers
 {
@@ -23,6 +24,38 @@ namespace proyectoAlkemy.Controllers
             _movieSeriesRepository = movieSeriesRepository;
             _context = context;
         }
+
+        [HttpGet]
+        [Route("movies")]
+        public IActionResult GetDetailMovies()
+        {
+            //definir una variable que contiene todas las movieseries del contexto
+            var movies = _context.MovieSeries.ToList();
+            
+            //si no hay objetos entonces devolver nocontent
+            if (!movies.Any()) return NoContent();
+            
+            //si no se cumple la condicion anterior entonces crear un objeto con la estructra del viewmodel
+            var responseViewModel = new List<MoviesGetResponseViewModel>();
+
+            //recorrer con un ciclo el objeto con la lista de movies y extraer solo los datos necesarios
+            foreach (var movie in movies)
+            {
+                responseViewModel.Add(new MoviesGetResponseViewModel()
+                {
+                    Image = movie.Image,
+                    Title = movie.Title,
+                    Release_Year = movie.Release_Year,
+                    Ranking = movie.Ranking,
+                });
+            }
+
+            //se retorna solo el modelo de vista
+            return Ok(responseViewModel);
+        }
+
+
+
 
         [HttpGet]
         [Route("allMovieSeries")]
