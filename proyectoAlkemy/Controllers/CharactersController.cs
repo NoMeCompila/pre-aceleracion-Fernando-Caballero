@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using proyectoAlkemy.Models;
 using proyectoAlkemy.Interfaces;
 using proyectoAlkemy.Contexts;
+using Microsoft.EntityFrameworkCore;
 //view model
 using proyectoAlkemy.ViewModels.Characters;
 
@@ -26,12 +27,14 @@ namespace proyectoAlkemy.Controllers
         [HttpGet]
         [Route("getDetailCharacters")]
 
-        public async Task<IActionResult> GetDetailCharacters([FromQuery] CharacterGetDetailViewModel model) { 
-            
-            var characters = _context.Characters.ToList();
+        public async Task<IActionResult> GetDetailCharacters([FromQuery] CharacterGetDetailViewModel model) {
+
+            //var characters = _context.Characters.Include(x => x.MovieSeries).ThenInclude(y => y.Genres).ToList();
+
+            var characters = _context.Characters.Include(x => x.MovieSeries).ToList();
 
             if (!string.IsNullOrEmpty(model.Name)){
-                characters = characters.Where(x=>x.Name == model.Name).ToList();
+                characters = characters.Where(x => x.Name == model.Name).ToList();
             }
             
             if (!string.IsNullOrEmpty(model.Age.ToString())){
@@ -42,19 +45,12 @@ namespace proyectoAlkemy.Controllers
             {
                 characters = characters.Where(x => x.Weight == model.Weight).ToList();
             }
-            
-            /*
-            if (!string.IsNullOrEmpty(model.MovieSeries.ToString()))
-            {
-                List<int> aux = new List<int>();
-                
-                foreach(var charact in characters)
-                {
 
-                }
-                
-                //characters = ;
-            }*/
+            if (model.MovieSeriesID.Any())
+            {
+                characters = characters.Where(x => x.MovieSeries.Any(y => model.MovieSeriesID.Contains(y.ID))).ToList();
+                //characters = characters.Where(x => x.MovieSeries.Any()).ToList();
+            }
 
 
             if (!characters.Any()) return NoContent();
@@ -68,10 +64,9 @@ namespace proyectoAlkemy.Controllers
                     Name = character.Name,
                     Age = character.Age,
                     Weight = character.Weight,
-                    Lore = character.Lore//,
+                    Lore = character.Lore,
                     //MovieSeriesID = character.ID
                 });
-            
             }
             return Ok(responseViewModel);
 
@@ -107,17 +102,57 @@ namespace proyectoAlkemy.Controllers
 
         [HttpPost]
         [Route("newCharcater")]
+        public async Task<IActionResult> PostCharacter(CharacterPostViewModel charact)
+        {
+            //se genera una entidad del modelo con los datos minimos para llenar los campos del ViewModel
+            Characters character = new Characters { 
+                Image = charact.Image,
+                Name = charact.Name,
+                Age = charact.Age,
+                Weight = charact.Weight,
+                Lore = charact.Lore
+            };
+            
+            //se añade al contexto se guardan cambios y se retorna
+            _charactersRepository.Add(character);
+            _context.SaveChanges();
+            return Ok(_context.Characters.ToList());
+
+        }
+
+        /* 
+        //solucion anterior que trae la entidad completa
         public IActionResult PostCharacter(Characters charact) {
 
             _context.Characters.Add(charact);
             _context.SaveChanges();
             return Ok(_context.Characters.ToList());
-        }
+        }*/
 
 
         [HttpPut]
         [Route("modifyCharcater")]
+        public IActionResult PutCharacter(CharacterPutViewModel character)
+        {
 
+            if (_context.Characters.FirstOrDefault(x => x.ID == character.ID) == null) 
+                return BadRequest("El personaje no existe.");
+
+            var auxCharacter = _context.Characters.Find(character.ID);
+
+            auxCharacter.Image = character.Image;
+            auxCharacter.Name = character.Name;
+            auxCharacter.Weight = character.Weight;
+            auxCharacter.Age = character.Age;
+            auxCharacter.Lore = character.Lore;
+
+
+
+            _context.SaveChanges();
+            return Ok(_context.Characters.ToList());
+        }
+
+        /*
         public IActionResult PutCharacter(Characters character) {
 
             if (_context.Characters.FirstOrDefault(x => x.ID == character.ID) == null) return BadRequest("El personaje no existe.");
@@ -133,7 +168,7 @@ namespace proyectoAlkemy.Controllers
             _context.SaveChanges();
 
             return Ok(_context.Characters.ToList());
-        }
+        }*/
 
         [HttpDelete]
         [Route("{id}")]
@@ -145,7 +180,7 @@ namespace proyectoAlkemy.Controllers
 
             _context.Characters.Remove(auxCharacter);
             _context.SaveChanges();
-            return Ok();
+            return Ok(_context.Characters.ToList());
         }
     }
 

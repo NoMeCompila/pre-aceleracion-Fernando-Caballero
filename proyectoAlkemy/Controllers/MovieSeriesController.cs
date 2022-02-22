@@ -33,7 +33,7 @@ namespace proyectoAlkemy.Controllers
         public async Task<IActionResult> GetMVS([FromQuery] MoviesGetResponseViewModel model)
         {
 
-            var movies = _movieSeriesRepository.GetAllEntities();
+            var movies = _context.MovieSeries.ToList();
 
             if (!string.IsNullOrEmpty(model.Title))
             {
@@ -121,6 +121,22 @@ namespace proyectoAlkemy.Controllers
 
         [HttpPost]
         [Route("newMovieSeries")]
+        public async Task<IActionResult> PostMovieSeries(MovieSeriePostViewModel movieSerie)
+        {
+
+            MovieSerie movie = new MovieSerie
+            {
+                Image = movieSerie.Image,
+                Title = movieSerie.Title,
+                Release_Year = movieSerie.Release_Year,
+                Ranking = movieSerie.Ranking
+            }; 
+            
+            _movieSeriesRepository.Add(movie);
+            _context.SaveChanges();
+            return Ok(_context.MovieSeries.ToList());
+        }
+        /*
         //se pasa como parametro uin objeto de tipo movieSerie
         public IActionResult PostMovieSeries(MovieSerie movieSerie) {
             //service agrega al contexto la nueva serie
@@ -129,7 +145,7 @@ namespace proyectoAlkemy.Controllers
             _context.SaveChanges();
             //se retorna una lista con el objeto agregado
             return Ok(_context.MovieSeries.ToList());
-        }
+        }*/
 
         [HttpPut]
         [Route("modifyMovieSerie")]
