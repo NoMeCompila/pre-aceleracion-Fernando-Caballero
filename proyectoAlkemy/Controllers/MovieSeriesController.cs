@@ -4,6 +4,7 @@ using proyectoAlkemy.Models;
 using proyectoAlkemy.Interfaces;
 using proyectoAlkemy.Contexts;
 using proyectoAlkemy.ViewModels.MovieSeries;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace proyectoAlkemy.Controllers
@@ -30,14 +31,23 @@ namespace proyectoAlkemy.Controllers
         [HttpGet]
         [Route("getMovieSeriesDetail")]
 
-        public async Task<IActionResult> GetMVS([FromQuery] MoviesGetResponseViewModel model)
+        public async Task<IActionResult> GetMVS([FromQuery] MoviesGetRequestViewModel model)
         {
-
-            var movies = _context.MovieSeries.ToList();
+           
+            var movies = _context.MovieSeries.Include(x => x.Genres).ToList();
 
             if (!string.IsNullOrEmpty(model.Title))
             {
                 movies = movies.Where(x => x.Title == model.Title).ToList();
+            }
+
+            if (model.GenresIDs.Any())
+            {
+                movies = movies.Where(x => x.Equals(model.GenresIDs)).ToList();
+                //characters = characters.Where(x => x.MovieSeries.Any(y => model.MovieSeriesID.Contains(y.ID))).ToList();
+
+                //movies = movies.Where(x => x.Genres.Asociated_Movie_Serie.Any()).ToList();
+                //movies = movies.Where(x => x.Genres.Any()
             }
 
 
@@ -149,7 +159,7 @@ namespace proyectoAlkemy.Controllers
 
         [HttpPut]
         [Route("modifyMovieSerie")]
-        public IActionResult PutMovieSeries(MovieSerie movieSerie)
+        public IActionResult PutMovieSeries(MovieSeriePutModelView movieSerie)
         {
             //primero hay que saber si la serie o pelicula existe en el contexto o base de datos
             if (_context.MovieSeries.FirstOrDefault(x => x.ID == movieSerie.ID) == null) 
@@ -163,7 +173,6 @@ namespace proyectoAlkemy.Controllers
             auxMovie.Title = movieSerie.Title;
             auxMovie.Release_Year = movieSerie.Release_Year;
             auxMovie.Ranking = movieSerie.Ranking;
-            auxMovie.Genres = movieSerie.Genres;
 
             //se guardan los cambios
             _context.SaveChanges();

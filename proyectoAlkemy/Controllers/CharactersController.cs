@@ -27,7 +27,7 @@ namespace proyectoAlkemy.Controllers
         [HttpGet]
         [Route("getDetailCharacters")]
 
-        public async Task<IActionResult> GetDetailCharacters([FromQuery] CharacterGetDetailViewModel model) {
+        public async Task<IActionResult> GetDetailCharacters([FromQuery] CharacterRequestDetailViewModel model) {
 
             //var characters = _context.Characters.Include(x => x.MovieSeries).ThenInclude(y => y.Genres).ToList();
 
@@ -40,39 +40,40 @@ namespace proyectoAlkemy.Controllers
             if (!string.IsNullOrEmpty(model.Age.ToString())){
                 characters = characters.Where(x => x.Age == model.Age).ToList();
             }
-            
-            if (!string.IsNullOrEmpty(model.Weight.ToString()))
-            {
-                characters = characters.Where(x => x.Weight == model.Weight).ToList();
-            }
 
             if (model.MovieSeriesID.Any())
             {
                 characters = characters.Where(x => x.MovieSeries.Any(y => model.MovieSeriesID.Contains(y.ID))).ToList();
-                //characters = characters.Where(x => x.MovieSeries.Any()).ToList();
             }
 
 
             if (!characters.Any()) return NoContent();
 
-            var responseViewModel = new List<CharacterGetDetailViewModel>();
+            var responseViewModel = new List<CharacterResponsetDetailViewModel>();
 
             foreach (var character in characters) {
-                responseViewModel.Add(new CharacterGetDetailViewModel()
+                responseViewModel.Add(new CharacterResponsetDetailViewModel()
                 {
                     Image = character.Image,
                     Name = character.Name,
                     Age = character.Age,
                     Weight = character.Weight,
-                    Lore = character.Lore,
-                    //MovieSeriesID = character.ID
+                    Lore = character.Lore
+                    //MovieSeriesID = character.MovieSeries.Contains(model.MovieSeriesID)
                 });
             }
             return Ok(responseViewModel);
 
         }
-
-
+        /*
+        [HttpGet]
+        [Route("GetRelatedData")]
+        public IActionResult RelateData()
+        {
+            //characters = characters.Where(x => x.MovieSeries.Any(y => model.MovieSeriesID.Contains(y.ID))).ToList();
+            var characters = _context.Characters.Include(x => x.MovieSeries).ToList();
+            return Ok(characters);
+        }*/
 
 
         [HttpGet]

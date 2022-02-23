@@ -15,5 +15,10 @@ namespace proyectoAlkemy.Repositories
 
         }
 
+        public List<Characters> getCharactersMS()
+        {
+            return DbSet.Include(x => x.MovieSeries).ToList();
+        }
+
     }
 }
