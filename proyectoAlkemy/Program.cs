@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using proyectoAlkemy.Contexts;
 using proyectoAlkemy.Interfaces;
+using proyectoAlkemy.Models;
 using proyectoAlkemy.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,13 @@ builder.Services.AddDbContext<DisneyContext>((services, options) =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DisneyConnectionString"));
 });
 
+builder.Services.AddDbContext<UserContext>((services, options) =>
+{
+    options.UseApplicationServiceProvider(services);
+    //para que no esté hardocodeado se le pasa como parametro una variable que contiene el string de conexion
+    options.UseSqlServer(builder.Configuration.GetConnectionString("UsersConnectionString"));
+});
+
 //----------------------------------------INYECCIONES----------------------------------------
 //-------------------------------------------------------------------------------------------
 builder.Services.AddScoped<IGenresRepository, GenresRepository>();
@@ -27,7 +36,8 @@ builder.Services.AddScoped<ICharactersRepository, CharactersRepository>();
 builder.Services.AddScoped<IMovieSeriesRepository, MovieSeriesRepository>();
 //builder.Services.AddScoped<ICharacterMsRepository, CharacterMsRepository>();
 
-
+builder.Services.AddIdentity<User, IdentityRole>().
+    AddEntityFrameworkStores<UserContext>();
 //3 maneras de inyectar dependencias
 //builder.Services.AddTransient();
 //builder.Services.AddScoped(); //por default
