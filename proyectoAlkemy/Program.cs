@@ -1,9 +1,13 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using proyectoAlkemy.Contexts;
 using proyectoAlkemy.Interfaces;
 using proyectoAlkemy.Models;
 using proyectoAlkemy.Repositories;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -36,8 +40,32 @@ builder.Services.AddScoped<ICharactersRepository, CharactersRepository>();
 builder.Services.AddScoped<IMovieSeriesRepository, MovieSeriesRepository>();
 //builder.Services.AddScoped<ICharacterMsRepository, CharacterMsRepository>();
 
+
+//builder.Services.AddSingleton(builder.Configuration);
+
+
+
 builder.Services.AddIdentity<User, IdentityRole>().
     AddEntityFrameworkStores<UserContext>();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme= JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme= JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false, //quien hace el token
+        ValidateAudience = false, //para quien es el token
+        //la palabra secreta para la firma del token
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtKey"]))
+    };
+
+});
 //3 maneras de inyectar dependencias
 //builder.Services.AddTransient();
 //builder.Services.AddScoped(); //por default
@@ -55,8 +83,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

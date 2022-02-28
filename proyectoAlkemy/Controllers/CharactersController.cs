@@ -6,6 +6,7 @@ using proyectoAlkemy.Contexts;
 using Microsoft.EntityFrameworkCore;
 //view model
 using proyectoAlkemy.ViewModels.Characters;
+using Microsoft.AspNetCore.Authorization;
 
 namespace proyectoAlkemy.Controllers
 {
@@ -78,6 +79,7 @@ namespace proyectoAlkemy.Controllers
 
         [HttpGet]
         [Route("charactes")]
+        [Authorize]
         public IActionResult DetallesPersonajes() {
             var characters = _context.Characters.ToList();
             if (!characters.Any()) return NoContent();
