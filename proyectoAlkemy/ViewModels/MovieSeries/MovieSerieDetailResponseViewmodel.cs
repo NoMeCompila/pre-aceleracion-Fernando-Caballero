@@ -1,7 +1,7 @@
 ﻿using proyectoAlkemy.Models;
 namespace proyectoAlkemy.ViewModels.MovieSeries
 {
-    public class MovieSerieDetailViewmodel
+    public class MovieSerieDetailResponseViewmodel
     {
         public string? Image { get; set; }
         public string? Title { get; set; }

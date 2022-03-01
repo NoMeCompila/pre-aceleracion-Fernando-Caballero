@@ -93,7 +93,7 @@ namespace proyectoAlkemy.Controllers
 
         [HttpPost]
         [Route("newCharcater")]
-        public async Task<IActionResult> PostCharacter(CharacterPostViewModel charact)
+        public async Task<IActionResult> PostCharacter(CharacterPostRequestViewModel charact)
         {
             //se genera una entidad del modelo con los datos minimos para llenar los campos del ViewModel
             Characters character = new Characters { 
@@ -113,7 +113,7 @@ namespace proyectoAlkemy.Controllers
 
         [HttpPut]
         [Route("modifyCharcater")]
-        public IActionResult PutCharacter(CharacterPutViewModel character)
+        public IActionResult PutCharacter(CharacterPutRequestViewModel character)
         {
 
             if (_context.Characters.FirstOrDefault(x => x.ID == character.ID) == null) 

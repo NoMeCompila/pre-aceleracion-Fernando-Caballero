@@ -101,7 +101,7 @@ namespace proyectoAlkemy.Controllers
 
         [HttpPost]
         [Route("newMovieSeries")]
-        public async Task<IActionResult> PostMovieSeries(MovieSeriePostViewModel movieSerie)
+        public async Task<IActionResult> PostMovieSeries(MovieSeriePostRequestViewModel movieSerie)
         {
 
             MovieSerie movie = new MovieSerie
@@ -119,7 +119,7 @@ namespace proyectoAlkemy.Controllers
 
         [HttpPut]
         [Route("modifyMovieSerie")]
-        public IActionResult PutMovieSeries(MovieSeriePutModelView movieSerie)
+        public IActionResult PutMovieSeries(MovieSeriePutRequestViewModel movieSerie)
         {
             //primero hay que saber si la serie o pelicula existe en el contexto o base de datos
             if (_context.MovieSeries.FirstOrDefault(x => x.ID == movieSerie.ID) == null) 
