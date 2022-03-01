@@ -1,11 +1,9 @@
-﻿//libreria mvc
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using proyectoAlkemy.Models;
 using proyectoAlkemy.Interfaces;
 using proyectoAlkemy.Contexts;
 using proyectoAlkemy.ViewModels.MovieSeries;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace proyectoAlkemy.Controllers
 {
@@ -27,7 +25,6 @@ namespace proyectoAlkemy.Controllers
             _context = context;
         }
 
-        
         [HttpGet]
         [Route("getMovieSeriesDetail")]
 
@@ -44,10 +41,6 @@ namespace proyectoAlkemy.Controllers
             if (model.GenresIDs.Any())
             {
                 movies = movies.Where(x => x.Equals(model.GenresIDs)).ToList();
-                //characters = characters.Where(x => x.MovieSeries.Any(y => model.MovieSeriesID.Contains(y.ID))).ToList();
-
-                //movies = movies.Where(x => x.Genres.Asociated_Movie_Serie.Any()).ToList();
-                //movies = movies.Where(x => x.Genres.Any()
             }
 
 
@@ -69,26 +62,6 @@ namespace proyectoAlkemy.Controllers
             return Ok(responseViewModel);
 
         }
-        /*
-        [HttpGet]
-        [Route("probando")]
-        public IActionResult getMoviesPrueba()
-        {
-            List<MovieSerieDetailViewmodel> msg = new List<MovieSerieDetailViewmodel>();
-
-            var movies = _context.MovieSeries.ToList();
-
-            foreach(MovieSerie movie in movies)
-            {
-                foreach(Genres genre in movie.Genres)
-                {
-
-                }
-            }
-        }
-        */
-
-
 
         [HttpGet]
         [Route("movies")]
@@ -119,9 +92,6 @@ namespace proyectoAlkemy.Controllers
             return Ok(responseViewModel);
         }
 
-
-
-
         [HttpGet]
         [Route("allMovieSeries")]
         public IActionResult GetAllMovieSeries() {
@@ -146,16 +116,6 @@ namespace proyectoAlkemy.Controllers
             _context.SaveChanges();
             return Ok(_context.MovieSeries.ToList());
         }
-        /*
-        //se pasa como parametro uin objeto de tipo movieSerie
-        public IActionResult PostMovieSeries(MovieSerie movieSerie) {
-            //service agrega al contexto la nueva serie
-            _context.Add(movieSerie);
-            //se gaurdan los cambion en el cotnexto
-            _context.SaveChanges();
-            //se retorna una lista con el objeto agregado
-            return Ok(_context.MovieSeries.ToList());
-        }*/
 
         [HttpPut]
         [Route("modifyMovieSerie")]
@@ -188,13 +148,10 @@ namespace proyectoAlkemy.Controllers
         {
             if (_context.MovieSeries.FirstOrDefault(x => x.ID == id) == null) 
                 return BadRequest("La película o serie no existe.");
-
             var auxMovie= _context.MovieSeries.Find(id);
-
             _context.MovieSeries.Remove(auxMovie);
             _context.SaveChanges();
             return Ok();
         }
-
     }
 }

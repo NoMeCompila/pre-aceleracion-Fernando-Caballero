@@ -3,7 +3,7 @@ namespace proyectoAlkemy.Models
 {
     public class Genres
     {
-        //propiedades primitivas
+
         public int ID { get; set; }
         [Required]
         [Display(Name = "Nombre")]
@@ -16,8 +16,6 @@ namespace proyectoAlkemy.Models
         [Required]
         public string Asociated_Movie_Serie { get; set; }
 
-        //pripiedades de navegacion
-        //un genero tiene varias peliculas asociadas
         public ICollection<MovieSerie> Movies { get; set; }
     }
 }

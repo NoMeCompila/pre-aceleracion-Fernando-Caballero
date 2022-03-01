@@ -1,10 +1,8 @@
-﻿//libreria mvc
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using proyectoAlkemy.Models;
 using proyectoAlkemy.Interfaces;
 using proyectoAlkemy.Contexts;
 using Microsoft.EntityFrameworkCore;
-//view model
 using proyectoAlkemy.ViewModels.Characters;
 using Microsoft.AspNetCore.Authorization;
 
@@ -66,16 +64,6 @@ namespace proyectoAlkemy.Controllers
             return Ok(responseViewModel);
 
         }
-        /*
-        [HttpGet]
-        [Route("GetRelatedData")]
-        public IActionResult RelateData()
-        {
-            //characters = characters.Where(x => x.MovieSeries.Any(y => model.MovieSeriesID.Contains(y.ID))).ToList();
-            var characters = _context.Characters.Include(x => x.MovieSeries).ToList();
-            return Ok(characters);
-        }*/
-
 
         [HttpGet]
         [Route("charactes")]
@@ -123,16 +111,6 @@ namespace proyectoAlkemy.Controllers
 
         }
 
-        /* 
-        //solucion anterior que trae la entidad completa
-        public IActionResult PostCharacter(Characters charact) {
-
-            _context.Characters.Add(charact);
-            _context.SaveChanges();
-            return Ok(_context.Characters.ToList());
-        }*/
-
-
         [HttpPut]
         [Route("modifyCharcater")]
         public IActionResult PutCharacter(CharacterPutViewModel character)
@@ -155,24 +133,6 @@ namespace proyectoAlkemy.Controllers
             return Ok(_context.Characters.ToList());
         }
 
-        /*
-        public IActionResult PutCharacter(Characters character) {
-
-            if (_context.Characters.FirstOrDefault(x => x.ID == character.ID) == null) return BadRequest("El personaje no existe.");
-
-            var auxCharacter = _context.Characters.Find(character.ID);
-
-            auxCharacter.Image = character.Image;
-            auxCharacter.Name = character.Name;
-            auxCharacter.Weight = character.Weight;
-            auxCharacter.Age = character.Age;
-            auxCharacter.Lore = character.Lore;
-
-            _context.SaveChanges();
-
-            return Ok(_context.Characters.ToList());
-        }*/
-
         [HttpDelete]
         [Route("{id}")]
 
@@ -186,7 +146,5 @@ namespace proyectoAlkemy.Controllers
             return Ok(_context.Characters.ToList());
         }
     }
-
-    //public interface Get                
         
 }

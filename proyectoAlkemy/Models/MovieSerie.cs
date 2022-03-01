@@ -3,7 +3,6 @@ namespace proyectoAlkemy.Models
 {
     public class MovieSerie
     {
-        //propiedades primitivas
         public int ID { get; set; }
         [Display(Name = "Imagen")]
         public string Image { get; set; }
@@ -18,11 +17,8 @@ namespace proyectoAlkemy.Models
         [Display(Name = "Valoración")]
         public int Ranking { get; set; }
       
-        //propiedades de navegacion
-        //una serie o pelicula tiene varios personajes
         public List<Characters>? Characters { get; set; }
         
-        //una serie o pelicula tiene un genero
         public Genres? Genres { get; set; }
     }
 }

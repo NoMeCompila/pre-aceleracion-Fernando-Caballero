@@ -12,6 +12,5 @@ namespace proyectoAlkemy.Interfaces
         void Delete(int id);
 
         Characters Update(Characters entity);
-        //necesto  el filtro
     }
 }

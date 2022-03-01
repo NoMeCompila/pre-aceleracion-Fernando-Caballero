@@ -4,14 +4,13 @@ namespace proyectoAlkemy.Models
     public class Characters
     {
 
-        //propiedades primitivas
         public int ID { get; set; }
         [Required]
         public string Image{ get; set; }
         
         [Required]
         [MaxLength(35)]
-        [RegularExpression("^[A-Za-z ]+$")] // solo letras y espacios
+        [RegularExpression("^[A-Za-z ]+$")]
         [Display(Name = "Nombre")]
         public string Name { get; set; }
 
@@ -27,10 +26,6 @@ namespace proyectoAlkemy.Models
         [DataType(DataType.MultilineText)]
         public string Lore { get; set; }
 
-
-
-        //propiedades de navegacion
-        // un personaje aparece en varias series o peliculas
         public List<MovieSerie>? MovieSeries { get; set; }
 
     }

@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 namespace proyectoAlkemy.Repositories
 {
-    //contiene toda la funcionalidad generica
-    //que queremos que tenga el resto de la aplicacion
-    //OPERACIONES CRUD
-    public abstract class BaseRepository<TEntity, TContext>//indicar entidad y contexto que sopn parametros genericos
+    public abstract class BaseRepository<TEntity, TContext>
         where TEntity : class 
         where TContext : DbContext
     {
@@ -23,27 +20,22 @@ namespace proyectoAlkemy.Repositories
         { 
             _context = context;
         }
-
         
-        //obtiene un listado de todas las entidades
         public List<TEntity> GetAllEntities() { 
             return _dbSet.ToList();
         }
 
-        //retorna una entidad en particular
         public TEntity GetEntity(int id) {
             return DbSet.Find(id);
         }
 
-        //agregar una nueva entidad
         public TEntity Add(TEntity entity)
         {
             _context.Add(entity);
-            _context.SaveChanges(); //cada vez que se manupulan datos de la DB es necesario gaurdar cambios
+            _context.SaveChanges();
             return entity;
         }
 
-        //borrar una entidad
         public void Delete(int id) { 
             
             var entityToDelete  = DbSet.Find(id);
@@ -54,8 +46,6 @@ namespace proyectoAlkemy.Repositories
             }
         }
 
-
-        //Modificar/Actualziar una entidad
         public TEntity Update(TEntity entity)
         {
             _context.Update(entity);

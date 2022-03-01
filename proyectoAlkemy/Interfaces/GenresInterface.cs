@@ -1,6 +1,4 @@
-﻿//interfaz para desacoplar clases
-//importar los modelos de entidades
-using proyectoAlkemy.Models;
+﻿using proyectoAlkemy.Models;
 
 namespace proyectoAlkemy.Interfaces
 {
@@ -15,6 +13,5 @@ namespace proyectoAlkemy.Interfaces
         void Delete(int id);
 
         Genres Update(Genres entity);
-        //necesto  el filtro
     }
 }
