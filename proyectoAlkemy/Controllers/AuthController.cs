@@ -30,6 +30,60 @@ namespace proyectoAlkemy.Controllers
         }
 
         [HttpPost]
+        [Route("registro-admin")]
+        public async Task<IActionResult> RegistroAdmin(string userName, string password, string email)
+        {
+            var userExists = await _userManager.FindByNameAsync(userName);
+
+
+            if(userExists != null) {
+                return StatusCode(StatusCodes.Status400BadRequest, new 
+                {
+
+                    StatusCode = "Error",
+                    Message = $"User creation failed!, user with name {userName} already exists."
+                });
+            }
+
+            //si no existe el usuario entonces agregarlo
+            var user = new User
+            {
+                UserName = userName,
+                Email = email,
+                isActive = true
+            };
+
+            var result = await _userManager.CreateAsync(user, password);
+
+            //si no se completo devolver un error del server
+            if (!result.Succeeded)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    StatusCode = "Error",
+                    Message = "User creation failed!, There was an internal server error."
+                });
+            }
+
+            if (!await _roleManager.RoleExistsAsync("User"))
+                await _roleManager.CreateAsync(new IdentityRole("User"));
+
+            if (!await _roleManager.RoleExistsAsync("Admin"))
+                await _roleManager.CreateAsync(new IdentityRole("Admin"));
+
+            await _userManager.AddToRoleAsync(user, "Admin");
+
+
+            //si se completo, devolver Ok();
+            return Ok(new
+            {
+                StatusCode = "Success",
+                Message = $"User {user.UserName} was created successfully!"
+            });
+        }
+
+
+        [HttpPost]
         [Route("registro")]
         public async Task<IActionResult> Register(string userName, string password, string email)
         {

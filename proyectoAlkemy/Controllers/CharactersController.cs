@@ -79,7 +79,7 @@ namespace proyectoAlkemy.Controllers
 
         [HttpGet]
         [Route("charactes")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult DetallesPersonajes() {
             var characters = _context.Characters.ToList();
             if (!characters.Any()) return NoContent();
