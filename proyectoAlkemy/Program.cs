@@ -8,6 +8,8 @@ using proyectoAlkemy.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using SendGrid.Extensions.DependencyInjection;
+using proyectoAlkemy.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +58,9 @@ builder.Services.AddDbContext<UserContext>((services, options) =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("UsersConnectionString"));
 });
 
+builder.Services.AddSendGrid(x => {
+    x.ApiKey = builder.Configuration["SendGridKey"];
+});
 //----------------------------------------INYECCIONES----------------------------------------
 //-------------------------------------------------------------------------------------------
 builder.Services.AddScoped<IGenresRepository, GenresRepository>();
@@ -63,7 +68,7 @@ builder.Services.AddScoped<ICharactersRepository, CharactersRepository>();
 builder.Services.AddScoped<IMovieSeriesRepository, MovieSeriesRepository>();
 //builder.Services.AddScoped<ICharacterMsRepository, CharacterMsRepository>();
 
-
+builder.Services.AddScoped<IMailService, MailService>();
 //builder.Services.AddSingleton(builder.Configuration);
 
 

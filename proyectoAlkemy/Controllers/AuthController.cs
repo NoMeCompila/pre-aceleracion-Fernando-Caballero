@@ -6,6 +6,7 @@ using proyectoAlkemy.ViewModels.Auth;
 using System.Security.Claims;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
+using proyectoAlkemy.Interfaces;
 
 namespace proyectoAlkemy.Controllers
 {
@@ -18,15 +19,18 @@ namespace proyectoAlkemy.Controllers
         private readonly SignInManager<User> _singInManager;
         private readonly IConfiguration _configuration;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IMailService _mailService;
         public AuthController(UserManager<User> userManager, 
             SignInManager<User> singInManager,
             IConfiguration configuration,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IMailService mailService)
         {
             _userManager = userManager;
             _singInManager = singInManager;
             _configuration = configuration;
             _roleManager = roleManager;
+            _mailService = mailService;
         }
 
         [HttpPost]
@@ -64,6 +68,9 @@ namespace proyectoAlkemy.Controllers
                     Message = "User creation failed!, There was an internal server error."
                 });
             }
+            //enviamos email
+            await _mailService.SendEmail(user);
+
 
             if (!await _roleManager.RoleExistsAsync("User"))
                 await _roleManager.CreateAsync(new IdentityRole("User"));
@@ -73,6 +80,9 @@ namespace proyectoAlkemy.Controllers
 
             await _userManager.AddToRoleAsync(user, "Admin");
 
+            
+            
+            
 
             //si se completo, devolver Ok();
             return Ok(new
@@ -117,6 +127,9 @@ namespace proyectoAlkemy.Controllers
                     Message = "User creation failed!, There was an internal server error."
                 });
             }
+
+            //enviamos email
+            await _mailService.SendEmail(user);
 
             //si se completo, devolver Ok();
             return Ok(new
