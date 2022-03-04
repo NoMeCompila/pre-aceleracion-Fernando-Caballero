@@ -11,7 +11,6 @@ namespace proyectoAlkemy.Controllers
     //decoradores para índicar que es una api y ruta y especificar las rutas 
     [ApiController]
     [Route("api/[controller]")]
-
     public class CharactersController : ControllerBase //hereda de la clase base para tener las funcionalidades
     {
         private readonly ICharactersRepository _charactersRepository;
@@ -24,11 +23,8 @@ namespace proyectoAlkemy.Controllers
         }
 
         [HttpGet]
-        [Route("getDetailCharacters")]
-
-        public async Task<IActionResult> GetDetailCharacters([FromQuery] CharacterRequestDetailViewModel model) {
-
-            //var characters = _context.Characters.Include(x => x.MovieSeries).ThenInclude(y => y.Genres).ToList();
+        [Route("search_character")]
+        public async Task<IActionResult> SerachCharacters([FromQuery] CharacterRequestDetailViewModel model) {
 
             var characters = _context.Characters.Include(x => x.MovieSeries).ToList();
 
@@ -45,7 +41,6 @@ namespace proyectoAlkemy.Controllers
                 characters = characters.Where(x => x.MovieSeries.Any(y => model.MovieSeriesID.Contains(y.ID))).ToList();
             }
 
-
             if (!characters.Any()) return NoContent();
 
             var responseViewModel = new List<CharacterResponsetDetailViewModel>();
@@ -57,16 +52,38 @@ namespace proyectoAlkemy.Controllers
                     Name = character.Name,
                     Age = character.Age,
                     Weight = character.Weight,
-                    Lore = character.Lore
-                    //MovieSeriesID = character.MovieSeries.Contains(model.MovieSeriesID)
+                    Lore = character.Lore,
+                    RelatedMovies = character.MovieSeries.Select(x => x.Title).ToList()
                 });
             }
             return Ok(responseViewModel);
-
         }
 
         [HttpGet]
-        [Route("charactes")]
+        [Route("detail_characters")]
+        public async Task<IActionResult> CharactersDetails()
+        {
+            var characters = _context.Characters.Include(x => x.MovieSeries).ToList();
+            if (!characters.Any()) return NoContent();
+            var responseViewModel = new List<CharactersDetailsResponseViewModel>();
+            foreach (var character in characters)
+            {
+                responseViewModel.Add(new CharactersDetailsResponseViewModel()
+                {
+                    ID = character.ID,
+                    Image = character.Image,
+                    Name = character.Name,
+                    Age = (int)character.Age,
+                    Weight = (float)character.Weight,
+                    Lore = character.Lore,
+                    RelatedMovies = character.MovieSeries.Select(x => x.Title).ToList()
+                });
+            }
+            return Ok(responseViewModel);
+        }
+
+        [HttpGet]
+        [Route("characters")]
         [Authorize(Roles = "Admin")]
         public IActionResult DetallesPersonajes() {
             var characters = _context.Characters.ToList();
@@ -82,17 +99,31 @@ namespace proyectoAlkemy.Controllers
             return Ok(responseViewModel);
         }
 
-
-
         [HttpGet]
-        [Route("AllCharacters")]
+        [Route("all_characters")]
         public IActionResult GetAllCharacters()
         {
-            return Ok(_context.Characters.ToList());
+            var characters = _context.Characters.Include(x => x.MovieSeries).ToList();
+
+            var responseViewModel = new List<CharacterResponsetDetailViewModel>();
+
+            foreach (var character in characters)
+            {
+                responseViewModel.Add(new CharacterResponsetDetailViewModel()
+                {
+                    Image = character.Image,
+                    Name = character.Name,
+                    Age = character.Age,
+                    Weight = character.Weight,
+                    Lore = character.Lore,
+                    RelatedMovies = character.MovieSeries.Select(x => x.Title).ToList()
+                });
+            }
+            return Ok(responseViewModel);
         }
 
         [HttpPost]
-        [Route("newCharcater")]
+        [Route("create_character")]
         public async Task<IActionResult> PostCharacter(CharacterPostRequestViewModel charact)
         {
             //se genera una entidad del modelo con los datos minimos para llenar los campos del ViewModel
@@ -108,11 +139,12 @@ namespace proyectoAlkemy.Controllers
             _charactersRepository.Add(character);
             _context.SaveChanges();
             return Ok(_context.Characters.ToList());
+            //return Ok(_context.Characters.Include(x => x.MovieSeries.Select(x => x.Title)).ToList());
 
         }
 
         [HttpPut]
-        [Route("modifyCharcater")]
+        [Route("update_character")]
         public IActionResult PutCharacter(CharacterPutRequestViewModel character)
         {
 
@@ -127,14 +159,12 @@ namespace proyectoAlkemy.Controllers
             auxCharacter.Age = character.Age;
             auxCharacter.Lore = character.Lore;
 
-
-
             _context.SaveChanges();
             return Ok(_context.Characters.ToList());
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("delete_character/{id}")]
 
         public IActionResult DeleteCharact(int id) {
             if (_context.Characters.FirstOrDefault(x => x.ID == id) == null) return BadRequest("El personaje no existe.");

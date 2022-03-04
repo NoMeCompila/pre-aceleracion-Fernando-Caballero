@@ -16,7 +16,6 @@ namespace proyectoAlkemy.Models
 
         [Required]
         [Display(Name = "Edad")]
-        [RegularExpression("[0-9]")]
         public int Age { get; set; }
         
         [Required]

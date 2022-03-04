@@ -68,8 +68,7 @@ namespace proyectoAlkemy.Controllers
                     Message = "User creation failed!, There was an internal server error."
                 });
             }
-            //enviamos email
-            await _mailService.SendEmail(user);
+            
 
 
             if (!await _roleManager.RoleExistsAsync("User"))
@@ -80,9 +79,10 @@ namespace proyectoAlkemy.Controllers
 
             await _userManager.AddToRoleAsync(user, "Admin");
 
-            
-            
-            
+            //enviamos email
+            await _mailService.SendEmail(user);
+
+
 
             //si se completo, devolver Ok();
             return Ok(new

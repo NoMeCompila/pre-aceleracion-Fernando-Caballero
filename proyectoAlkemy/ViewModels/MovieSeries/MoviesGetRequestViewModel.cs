@@ -1,7 +1,7 @@
 ﻿namespace proyectoAlkemy.ViewModels.MovieSeries
 {
     //view model de entrada
-    public class MoviesGetRequestViewModel
+    public class MoviesGetRequestViewModel //request entrada response salida
     {
         public string? Title { get; set; }
         //lista con solo con los ID de las películas

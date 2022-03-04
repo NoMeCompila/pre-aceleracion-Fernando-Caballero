@@ -8,6 +8,6 @@
         public int? Age { get; set; }
         public float? Weight { get; set; }
         public string? Lore { get; set; }
-        public List<int> MovieSeriesID { get; set; } = new List<int>();
+        public List<string> RelatedMovies { get; set; } = new List<string>();
     }
 }
